@@ -40,6 +40,7 @@ func (c *LoginController) Post() {
 
 		user.LastLoginIP = c.Ctx.Request.RemoteAddr
 		user.LastLoginTime = time.Now()
+		o.Update(&user)
 
 	}else {	// 用户名或密码错误
 		isLogin = false
