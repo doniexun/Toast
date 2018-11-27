@@ -1,1 +1,11 @@
-README
+1.下载源码
+git clone https://github.com/doniexun/Toast.git
+
+2.在MySQL中创建数据库 toastdb
+
+3.进入 Toast/Toast-Server/ 目录后，运行：
+bee run
+将自动创建数据表。
+
+2018年11月27日09:05:27
+
