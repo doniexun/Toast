@@ -8,10 +8,10 @@ import (
 
 type User struct {
 	Id		int64		`orm:"auto;pk"`
-	Name		string		`orm:"size(100)"`
-	Nickname	string		`orm:"size(100)"`
-	Pwd		string		`orm:"size(100)"`
-	Email		string		`orm:"size(100)"`
+	Name		string		`orm:"unique;size(100)"`
+	Nickname	string		`orm:"unique;size(100)"`
+	Password	string		`orm:"size(100)"`
+	Email		string		`orm:"unique;size(100)"`
 	Gender		string		`orm:"size(2)"`
 	RoleId		string		`orm:"size(100)"`
 	Status		string		`orm:"size(3)"`

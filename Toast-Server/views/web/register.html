@@ -62,9 +62,10 @@
 					"wechat":$("#wechat").val()
 				},
 				success:function(result){
-					if(result.success==0){
-						$("#showinfo").html("注册成功")  
-					}else  if(result.success==1){
+					if(result.isSuccess){
+						//$("#showinfo").html("注册成功")  
+						window.location.href="/profile";
+					}else{
 						$("#showinfo").html("注册失败")  
 					}
 				}

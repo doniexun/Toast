@@ -1,7 +1,7 @@
 package main
 
 import (
-	"fmt"
+	//"fmt"
 	"github.com/astaxie/beego/orm"
 	_ "github.com/go-sql-driver/mysql"
 	_ "github.com/doniexun/Toast/Toast-Server/routers"
@@ -11,6 +11,7 @@ import (
 
 //初始化
 func init(){
+
 	dbhost := beego.AppConfig.String("dbhost")
 	dbport := beego.AppConfig.String("dbport")
     	dbuser := beego.AppConfig.String("dbuser")
@@ -25,7 +26,7 @@ func init(){
     	//注册数据库连接
     	orm.RegisterDataBase("default", "mysql", conn)
 	
-    	fmt.Printf("数据库连接成功！%s\n", conn)  
+    	//fmt.Printf("数据库连接成功！%s\n", conn)  
 }
 
 func main() {
@@ -37,5 +38,7 @@ func main() {
 
     	//启用Session
     	beego.BConfig.WebConfig.Session.SessionOn = true
+	beego.BConfig.WebConfig.Session.SessionName = "toast"
+
 	beego.Run()
 }

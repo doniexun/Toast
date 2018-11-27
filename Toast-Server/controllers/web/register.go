@@ -2,8 +2,10 @@ package controllers
 
 import (
 	"fmt"
+	"strings"
 	"github.com/astaxie/beego"
 	"github.com/doniexun/Toast/Toast-Server/models"
+	"github.com/doniexun/Toast/Toast-Server/utils"
 	"github.com/astaxie/beego/orm"
 )
 
@@ -18,19 +20,20 @@ func (c *RegisterController) Get() {
 
 //注册功能
 func (c *RegisterController) Post() {
-	name := c.GetString("name")
-	nickname := c.GetString("nickname")
-	pwd := c.GetString("pwd")
-	email := c.GetString("email")
-	phone := c.GetString("phone")
-	qq := c.GetString("qq")
-	wechat := c.GetString("wechat")
+	// 第一重处理：去掉收尾空格
+	name := strings.TrimSpace(c.GetString("name"))
+	nickname := strings.TrimSpace(c.GetString("nickname"))
+	password := strings.TrimSpace(c.GetString("pwd"))
+	email := strings.TrimSpace(c.GetString("email"))
+	phone := strings.TrimSpace(c.GetString("phone"))
+	qq := strings.TrimSpace(c.GetString("qq"))
+	wechat := strings.TrimSpace(c.GetString("wechat"))
 	
 	// TODO 先不校验，直接写入数据库表	
 	user := models.User{}
 	user.Name = name
 	user.Nickname = nickname
-	user.Pwd = pwd
+	user.Password = utils.Md5([]byte(password))
 	user.Email = email
 	user.Phone = phone
 	user.QQ = qq
@@ -38,20 +41,19 @@ func (c *RegisterController) Post() {
 	user.RegisterIP = c.Ctx.Request.RemoteAddr
 	user.LastLoginIP = c.Ctx.Request.RemoteAddr
 
-	success := 0
+	isSuccess := false
 	o := orm.NewOrm()
-	id, err := o.Insert(&user)
+	id, err := o.Insert(&user)			// 将用户信息插入数据表中
 	fmt.Println("New user id:%d\n", id)
 	if err == nil {
-		success = 0
-		c.SetSession("user", "adminuser")
+		isSuccess = true
+		c.SetSession("loginuser", int64(user.Id))
 		fmt.Println("当前的session:")
 		fmt.Println(c.CruSession)
-	} else {
-		success = 1
 	}
 
-	c.Data["json"]=map[string]interface{}{"success":success};
-	c.ServeJSON();
+	c.Data["json"]=map[string]interface{}{"isSuccess":isSuccess};
+	c.ServeJSON();					// 只要有输出，后续代码就不会再运行
 }
+
 

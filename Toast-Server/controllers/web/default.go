@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"strings"
 	"github.com/astaxie/beego"
 )
 
@@ -13,3 +14,10 @@ func (c *MainController) Get() {
 	c.Data["Email"] = "astaxie@gmail.com"
 	c.TplName = "index.tpl"
 }
+
+//获取用户IP地址
+func (c *MainController) getClientIp() string {
+	s := strings.Split(c.Ctx.Request.RemoteAddr, ":")
+	return s[0]
+}
+
